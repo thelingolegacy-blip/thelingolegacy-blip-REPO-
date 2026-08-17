@@ -1,0 +1,14 @@
+{
+  "id": "com.lingolegacy.thatsmylingo",
+  "version": "1.0.0",
+  "type": "web",
+  "title": "That's My Lingo ⭐️",
+  "main": "index.html",
+  "icon": "icon.png",
+  "largeIcon": "icon.png",
+  "resolution": "1920x1080",
+  "vendor": "Lingo Legacy Entertainment",
+  "disableBackHistoryAPI": true,
+  "handlesRelaunch": true,
+  "requiredPermissions": []
+}
