@@ -1,0 +1,28 @@
+policy:
+  id: auto.health-checks.safe
+  version: "1.0"
+  status: ACTIVE
+  scope:
+    resource: platform
+    action: RUN_HEALTH_CHECK
+  conditions:
+    event_type: HEALTH_SIGNAL
+    severity: [Medium, High]
+    environment: [staging, prod]
+  decision:
+    type: ALLOW
+    parameters:
+      actions: [RUN_HEALTH_CHECK, UPDATE_DASHBOARD]
+      max_frequency_seconds: 300
+      max_parallel_checks: 3
+      requires_incident_if_failed: true
+  precedence:
+    level: application
+  audit:
+    required: true
+  constitutional_constraints:
+    safety_gateway_required: true
+    rule_engine_required: true
+    iam_required: true
+    production_deploy_allowed: false
+    production_rollback_allowed: false
