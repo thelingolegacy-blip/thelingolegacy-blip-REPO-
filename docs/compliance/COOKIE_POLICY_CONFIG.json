@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "essential": [
+    {"name": "lingo_legacy_consent_v1", "purpose": "Stores consent state", "retention": "until withdrawn or policy expiry"}
+  ],
+  "optional": {
+    "analytics": {"enabled": false, "requiresConsent": true},
+    "marketing": {"enabled": false, "requiresConsent": true},
+    "personalization": {"enabled": false, "requiresConsent": true}
+  },
+  "controls": {
+    "defaultState": "essential_only",
+    "withdrawalEnabled": true,
+    "reopenPreferences": true,
+    "failClosed": true,
+    "doNotTrackAsConsent": false
+  },
+  "deploymentGate": {
+    "required": true,
+    "checks": ["privacy_url", "terms_url", "retention_policy", "jurisdiction_config", "audit_sink"]
+  }
+}
