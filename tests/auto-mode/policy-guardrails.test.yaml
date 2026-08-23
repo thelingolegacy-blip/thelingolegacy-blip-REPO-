@@ -1,0 +1,44 @@
+suite:
+  id: auto-mode.policy-guardrails
+  version: 1.0
+  fail_closed: true
+
+cases:
+  - name: failed-production-deployment-requires-approval
+    given:
+      event_type: DEPLOYMENT_EVENT
+      status: FAILED
+      environment: prod
+    expect:
+      decision: REQUIRE_APPROVAL
+      prohibited_actions: [DEPLOY, ROLLBACK, POLICY_CHANGE]
+
+  - name: degraded-staging-deployment-requires-approval
+    given:
+      event_type: DEPLOYMENT_EVENT
+      status: DEGRADED
+      environment: staging
+    expect:
+      decision: REQUIRE_APPROVAL
+
+  - name: critical-incident-routing-is-allowed
+    given:
+      severity: CRITICAL
+    expect:
+      decision: ALLOW
+      actions: [CREATE_INCIDENT, ASSIGN_OWNER, NOTIFY_CHANNELS]
+
+  - name: missing-policy-context-fails-closed
+    given:
+      event_type: DEPLOYMENT_EVENT
+      environment: prod
+    expect:
+      decision: DENY
+
+  - name: auto-mode-cannot-bypass-constitutional-controls
+    given:
+      requested_action: ROLLBACK
+      actor: auto-mode-service
+      approval_id: null
+    expect:
+      decision: REQUIRE_APPROVAL
