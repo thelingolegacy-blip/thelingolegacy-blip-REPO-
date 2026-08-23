@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://thelingolegacy.com/schemas/auto-mode/event/v1",
+  "title": "Lingo Legacy Auto Mode Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["event_id", "event_type", "environment", "severity", "occurred_at", "trace_id"],
+  "properties": {
+    "event_id": {"type": "string", "minLength": 1},
+    "event_type": {"type": "string", "enum": ["HEALTH_SIGNAL", "DEPLOYMENT_EVENT", "SECURITY_EVENT", "ENFORCEMENT_EVENT", "INCIDENT", "INTEGRATION_EVENT"]},
+    "environment": {"type": "string", "enum": ["dev", "staging", "prod"]},
+    "severity": {"type": "string", "enum": ["Low", "Medium", "High", "Critical"]},
+    "occurred_at": {"type": "string", "format": "date-time"},
+    "trace_id": {"type": "string", "minLength": 1},
+    "source": {"type": "string"},
+    "payload": {"type": "object", "additionalProperties": true}
+  }
+}
