@@ -1,0 +1,27 @@
+policy:
+  id: auto.incident.routing
+  version: 1.0
+  status: active
+  scope:
+    resource: incident
+    action: route
+    user: null
+    app: null
+  conditions:
+    severity: [HIGH, CRITICAL]
+  decision:
+    type: ALLOW
+    parameters:
+      actions: [CREATE_INCIDENT, ASSIGN_OWNER, NOTIFY_CHANNELS]
+      channels: [terminal, jira]
+  precedence:
+    level: platform
+  audit:
+    required: true
+  effective:
+    starts_at: "2026-08-23T00:00:00Z"
+    expires_at: null
+  governance:
+    created_by: platform-ops
+    approved_by: null
+    change_reason: "Constitutional high-severity incident routing"
