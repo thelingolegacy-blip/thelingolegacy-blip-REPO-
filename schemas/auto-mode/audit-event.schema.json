@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://thelingolegacy.com/schemas/auto-mode/audit-event.schema.json",
+  "title": "Auto Mode Audit Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["event_type", "event_id", "trace_id", "actor", "action", "decision", "policy_id", "environment", "timestamp"],
+  "properties": {
+    "event_type": {"type": "string", "const": "AUTO_MODE_ACTION"},
+    "event_id": {"type": "string", "minLength": 8},
+    "trace_id": {"type": "string", "minLength": 8},
+    "actor": {"type": "string", "const": "auto-mode-service"},
+    "action": {"type": "string", "minLength": 1},
+    "decision": {"type": "string", "enum": ["ALLOW", "DENY", "LIMIT", "REQUIRE_APPROVAL", "REQUIRE_PARENT_AUTH"]},
+    "policy_id": {"type": "string", "minLength": 1},
+    "policy_version": {"type": "string", "minLength": 1},
+    "environment": {"type": "string", "enum": ["dev", "staging", "prod"]},
+    "target": {"type": ["string", "null"]},
+    "reason_code": {"type": "string", "minLength": 1},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "verification": {"type": "string", "enum": ["PENDING", "PASSED", "FAILED"]},
+    "result": {"type": ["object", "null"]}
+  }
+}
