@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://thelingolegacy.com/schemas/auto-mode/action-authorization.schema.json",
+  "title": "Auto Mode Action Authorization",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["trace_id", "actor", "action", "target", "environment", "decision", "policy_id", "safety_check", "iam_check"],
+  "properties": {
+    "trace_id": {"type": "string", "minLength": 8},
+    "actor": {"type": "string", "const": "auto-mode-service"},
+    "action": {"type": "string", "enum": ["RUN_HEALTH_CHECK", "RUN_DIAGNOSTICS", "RUN_TESTS", "GENERATE_REPORT", "UPDATE_DASHBOARD", "CREATE_INCIDENT", "ASSIGN_OWNER", "NOTIFY_CHANNELS"]},
+    "target": {"type": "string", "minLength": 1},
+    "environment": {"type": "string", "enum": ["dev", "staging", "prod"]},
+    "decision": {"type": "string", "enum": ["ALLOW", "DENY", "LIMIT", "REQUIRE_APPROVAL", "REQUIRE_PARENT_AUTH"]},
+    "policy_id": {"type": "string", "minLength": 1},
+    "safety_check": {"type": "string", "const": "PASSED"},
+    "iam_check": {"type": "string", "const": "PASSED"},
+    "approval_id": {"type": ["string", "null"]},
+    "constraints": {"type": ["object", "null"]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"decision": {"enum": ["REQUIRE_APPROVAL", "REQUIRE_PARENT_AUTH"]}}},
+      "then": {"required": ["approval_id"]}
+    }
+  ]
+}
