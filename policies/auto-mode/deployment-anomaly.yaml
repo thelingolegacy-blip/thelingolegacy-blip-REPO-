@@ -1,0 +1,29 @@
+policy:
+  id: auto.deployment.anomaly
+  version: 1.0
+  status: active
+  scope:
+    resource: deployment
+    action: remediate
+    user: null
+    app: null
+  conditions:
+    event_type: DEPLOYMENT_EVENT
+    status: [FAILED, DEGRADED]
+    environment: [staging, prod]
+  decision:
+    type: REQUIRE_APPROVAL
+    parameters:
+      allowed_followup_actions: [CREATE_INCIDENT, GENERATE_REPORT]
+      prohibited_without_approval: [DEPLOY, ROLLBACK, POLICY_CHANGE]
+  precedence:
+    level: platform
+  audit:
+    required: true
+  effective:
+    starts_at: "2026-08-23T00:00:00Z"
+    expires_at: null
+  governance:
+    created_by: platform-ops
+    approved_by: null
+    change_reason: "Constitutional Auto Mode deployment anomaly guardrail"
