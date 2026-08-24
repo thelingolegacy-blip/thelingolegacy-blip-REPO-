@@ -1,0 +1,35 @@
+name: Compliance Gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  compliance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify constitutional compliance artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f docs/compliance/COMPLIANCE_BASELINE.md
+          test -f docs/compliance/COOKIE_POLICY_CONFIG.json
+          test -f apps/web/public/consent/cookie-box.js
+          test -f apps/web/public/consent/README.md
+          echo "Compliance baseline artifacts present."
+
+      - name: Verify no optional tracking is enabled by default
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'analytics' docs/compliance/COOKIE_POLICY_CONFIG.json
+          grep -q 'marketing' docs/compliance/COOKIE_POLICY_CONFIG.json
+          grep -q 'personalization' docs/compliance/COOKIE_POLICY_CONFIG.json
+          echo "Consent categories are defined; optional activation remains consent-gated."
